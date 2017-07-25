@@ -1,7 +1,7 @@
 // 动态显示歌词
 const fs = require("fs");
 const path = require("path");
-const iconv = require("iconv-lite");
+const iconv = require("iconv-lite");// 解决gbk等编码问题
 
 fs.readFile(path.join(__dirname, './lyrics/血染的风采.lrc'), (error, data) => {
   // console.log(iconv.decode(data,'gbk'));
