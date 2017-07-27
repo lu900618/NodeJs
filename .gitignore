@@ -1,0 +1,29 @@
+﻿# IntelliJ IDEA Project files
+.idea
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# vscode
+.vscode
+.vscode/
+
+node_modules/
+
+ignore/
+
+# Mac
+.DS_Store
+# Windows:
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Python:
+*.py[cod]
+*.so
+*.egg
+*.egg-info
+dist
+build
