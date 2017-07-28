@@ -23,6 +23,11 @@ fs.stat('D:\\迅雷下载\\cn_office_professional_plus_2016_x86_x64_dvd_6969182.
       });
 
     });
+
+    reader.on('end', () => {
+      // 关闭写入流
+      writer.end();
+    })
   }
 });
 
