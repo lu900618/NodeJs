@@ -180,4 +180,27 @@ file
   reader.pipe(writer);
   ```
 
+Socket
+===
 
+引入模块 `const net = require('net');`
+创建server `const server = net.createServer();`
+监听server被连接 
+```javascript
+server.on('connection', (socket) => {
+  // 获取远程客户端的ip地址
+  let addr = socket.remoteAddress;
+  // 获取远程客户端的端口号
+  let port = socket.remotePort;
+  console.log(`客户端${addr}:${port}连接上来了`);
+})
+```
+监听服务器, 端口 
+```javascript
+server.listen(config.port, config.host, () => {
+  console.log(`server is running at ${config.host}: ${config.port}`);
+});
+```
+创建client `const client = net.createConnection(3000, '127.0.0.1')`
+监听client连接 `client.on('connect', () => { });`
+socket数据 `socket.on('data', (data) => {})`
