@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>订餐系统</title>
+  <style>
+    .box {
+      width: 800px;
+      height: 600px;
+      border: 1px solid #000;
+      margin: 0 auto;
+      background: -webkit-linear-gradient(top, lightblue, white);
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    h1{
+      text-align: center;
+    }
+    input{
+      font-size: 20px;
+    }
+    a {
+      color: #333;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="box">
+    <h1>订餐系统</h1>
+    <p>请输入手机号码：
+      <input type="text" name="mobile" id=""></p>
+    <p>吃什么:
+      <input type="text" name="name" id=""></p>
+    <input type="button" value="提交" id="btn">
+    <p>
+      <a href="/dingdan">查看所有订单</a>
+    </p>
+  </div>
+</body>
+
+<script src="./js/jquery.min.js"></script>
+<script>
+  $('#btn').click(function () {
+    var mobile = $('input[name=mobile]').val()
+    var name = $('input[name=name]').val()
+    $.post('/baocun', {
+      mobile: mobile,
+      name: name
+    }, function (retCode) {
+      if (retCode === '-1') {
+        alert('存入失败')
+      } else {
+        alert('存入成功')
+      }
+    })
+  })
+
+</script>
+
+</html>
