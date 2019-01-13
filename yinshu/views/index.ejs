@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>首页</title>
+<link rel="stylesheet" href="/css/bootstrap.min.css" />
+</head>
+
+<body>
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+          aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">因数计算器</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2">
+        <div class="col-lg-12">
+          <p>
+            请输入数字（1~100,000）：
+          </p>
+        </div>
+        <div class="col-lg-11">
+          <input type="text" class="form-control" id="shuzi" />
+        </div>
+        <div class="col-lg-1">
+          <button type="button" class="btn btn-success" id="btn">查询</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="/js/jquery.min.js"></script>
+  <script>
+    $('#btn').click(function () {
+      var     number = $('#shuzi').val()
+      if(number > 100000) {
+        alert('数字太大了')
+        return
+      }
+      window.location = '/' + number
+    })
+  </script>
+</body>
+
+</html>
