@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>小小学生管理系统</title>
+    <link href="/css/bootstrap.css" rel="stylesheet" />
+    <!-- FONT AWESOME ICONS  -->
+    <link href="/css/font-awesome.css" rel="stylesheet" />
+    <!-- CUSTOM STYLE  -->
+    <link href="/css/style.css" rel="stylesheet" />
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+</head>
+
+<body>
+
+    <!-- HEADER END-->
+    <div class="navbar navbar-inverse set-radius-zero">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="index.html">
+                    <h1>学生管理系统</h1>
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- LOGO HEADER END-->
+    <section class="menu-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="navbar-collapse collapse ">
+                        <ul id="menu-top" class="nav navbar-nav navbar-right">
+                            <li>
+                                <a class="menu-top-active" href="/">所有学生</a>
+                            </li>
+                            <li>
+                                <a href="/add">增加学生</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- MENU SECTION END-->
+    <div class="content-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 class="page-head-line">所有学生</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <!--   Basic Table  -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">学生清单</div>
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>学号</th>
+                                            <th>姓名</th>
+                                            <th>性别</th>
+                                            <th>年龄</th>
+                                            <th>操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbody"></tbody>
+                                </table>
+                            </div>
+                            <div id="pagenavbox"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="js/PageNav.js"></script>
+    <script>
+        $.get('/student', function (data) {
+            $.each(data.results, function (i, item) {
+                // console.log(item)
+                $tr = $('<tr></tr>')
+                $('<td></td>').html(item.sid).appendTo($tr)
+                $('<td></td>').html(item.name).appendTo($tr)
+                $('<td></td>').html(item.sex).appendTo($tr)
+                $('<td></td>').html(item.age).appendTo($tr)
+                $('<td></td>').html("<Button class='btn btn-danger delbtn' data-sid=" + item.sid + ">删除</Button><Button class='btn btn-warning modbtn' data-sid=" + item.sid + ">修改</Button>").appendTo($tr)
+                $tr.appendTo($('#tbody'))
+            })
+        })
+
+        $('#tbody').on('click', 'Button.delbtn', function () {
+            if (!confirm('真的要删除么？')) {
+                return
+            }
+            $this = $(this)
+            $.ajax({
+                type: 'delete',
+                url: '/student/' + $(this).attr('data-sid'),
+                success: function (data) {
+                    if (data.result === 1) {
+                        alert('删除成功')
+                        $this.parents('tr').remove()
+                    } else {
+                        alert('服务器错误')
+                    }
+                }
+            })
+        })
+
+        $('#tbody').on('click', 'Button.modbtn', function () {
+            window.location = '/student/' + $(this).attr('data-sid')
+        })
+    </script>
+
+</body>
+
+</html>
