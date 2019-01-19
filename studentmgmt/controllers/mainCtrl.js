@@ -61,6 +61,9 @@ exports.showUpdateStudent = (req, res) => {
   })
 }
 
+/**
+ * 修改学生信息
+ */
 exports.updateStudent = (req, res) => {
   let sid = req.params.sid
   console.log(`出发了post请求，修改sid为${sid}的学生`)
@@ -90,7 +93,7 @@ exports.deleteStudent = (req, res) => {
     if (results.length === 0) return res.json({ results: '查无此人' })
     let stu = results[0]
     stu.remove(err => {
-      err ? res.json({result: -1}) : res.json({result: 1})
+      res.json({result: err ? -1 : 1})
     })
   })
 }
@@ -122,7 +125,6 @@ exports.showPageStudents = (req, res) => {
     if (err) return res.json({ result: -2 })
     Student.find({}, null, {skip: pageSize * (pageNumber - 1), limit: pageSize}, (err, results) => {
       if (err) return res.json({ result: -2 })
-      console.log(results)
       res.json({results, total: count})
     })
   })
