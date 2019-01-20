@@ -1,0 +1,19 @@
+{
+  "name": "Elective-Course-Registration-System",
+  "version": "1.0.0",
+  "description": "A MVC project use express mongodb mongoose formidable ejs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "express-session": "^1.15.6",
+    "formidable": "^1.2.1",
+    "mongoose": "^5.4.5"
+  }
+}
