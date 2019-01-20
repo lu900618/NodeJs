@@ -2,7 +2,7 @@
 const express = require('express')
 const session = require('express-session')
 const mongoose = require('mongoose')
-const mainCtrl = require('./controllers/mainCtrl')
+const mainCtrl = require('./controllers/adminCtrl')
 
 // 连接数据库
 mongoose.connect('mongodb://localhost/ElectiveCourseRegistrationSystem', { useNewUrlParser: true })
@@ -19,7 +19,14 @@ app.use(session({
 app.set('view engine', 'ejs')
 
 // 中间件
-app.get('/', mainCtrl.showIndex)
+app.get('/admin', mainCtrl.showAdminDashboard)
+app.get('/admin/student', mainCtrl.showAdminStudent)
+app.get('/admin/student/import', mainCtrl.showAdminStudentImport)
+app.post('/admin/student/import', mainCtrl.doAdminStudentImport)
+app.get('/admin/student/export', mainCtrl.showAdminStudentExport)
+app.get('/admin/course', mainCtrl.showAdminCourse)
+app.get('/admin/report', mainCtrl.showAdminReport)
+app.get('/student', mainCtrl.getAllStudent)
 
 // 静态资源文件
 app.use(express.static('public'))
