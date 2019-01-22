@@ -88,18 +88,52 @@ exports.getAllStudent = (req, res) => {
   let page = parseInt(url.parse(req.url, true).query.page) || 1
   let sord = url.parse(req.url, true).query.sord === 'asc' ? 1 : -1
   let sidx = url.parse(req.url, true).query.sidx
-  Student.countDocuments({}, (err, count) => {
+  let keyword = url.parse(req.url, true).query.keyword
+
+  let obj = {}
+  obj[sidx] = sord // 不拼装对象 sort({sidx:sord})会识别成sort({sidx:1})
+
+  let filter = {}
+  if (keyword !== undefined || keyword !== '') {
+    let reg = new RegExp(keyword, 'g')
+    filter = {
+      // 模糊查询（全字段查询）
+      $or: [
+        { name: reg },
+        { sid: reg },
+        { grade: reg }
+      ]
+    }
+  }
+
+  Student.countDocuments(filter, (err, count) => {
     if (err) return res.json({ result: '服务器错误' })
     // Student.find({}, null, { skip: rows * (page - 1), limit: rows}, (err, results) => {
     //   if (err) return res.json({ result: '服务器错误' })
     //   res.json({ rows: results, total: Math.ceil(count / rows), records: count })
     // })
-    let obj = {}
-    obj[sidx] = sord
 
-    Student.find({}).skip(rows * (page - 1)).limit(rows).sort(obj).exec((err, results) => {
+    // 注意sort先后对结果的影像
+    Student.find(filter).sort(obj).skip(rows * (page - 1)).limit(rows).sort(obj).exec((err, results) => {
       if (err) return res.json({ result: '服务器错误' })
       res.json({ rows: results, total: Math.ceil(count / rows), records: count })
+    })
+  })
+}
+
+exports.updateStudent = (req, res) => {
+  let sid = parseInt(req.params.sid)
+  const form = new formidable.IncomingForm()
+  form.parse(req, (err, fields, files) => {
+    if (err) { return res.json({ result: '服务器错误' }) }
+    let key = fields.cellname
+    let value = fields.value
+    let obj = {}
+    obj[key] = value
+    Student.findOneAndUpdate({ sid }, obj, (err, results) => {
+      if (err) { return res.json({ result: '数据库异常' }) }
+      if (results.length === 0) { return res.json({ result: '未查到该学生信息' }) }
+      res.json({ result: '更新成功' })
     })
   })
 }

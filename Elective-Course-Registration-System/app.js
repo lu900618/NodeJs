@@ -27,6 +27,7 @@ app.get('/admin/student/export', mainCtrl.showAdminStudentExport)
 app.get('/admin/course', mainCtrl.showAdminCourse)
 app.get('/admin/report', mainCtrl.showAdminReport)
 app.get('/student', mainCtrl.getAllStudent)
+app.post('/student/:sid', mainCtrl.updateStudent)
 
 // 静态资源文件
 app.use(express.static('public'))
