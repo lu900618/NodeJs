@@ -42,12 +42,13 @@
         <div class='panel-body'>
           <div class="row searchbox">
             <div class="col-lg-4"><input type="text" class="form-control" name="keywordtxt" id="keywordtxt" placeholder="快捷查询"
-                autofocus></div>
+                autofocus>
+            </div>
+            <input type="button" value="删除" id="delbtn" class="btn btn-danger" />
           </div>
           <!-- 放置表格的地方 -->
           <table id="list"></table>
           <div id="listnav"></div>
-          <input type="button" value="删除" id="delbtn" />
         </div>
       </div>
     </div>
@@ -92,6 +93,7 @@
       cellEdit: true,
       cellsubmit: "clientArray",
       height: 300,
+      multiselect: true,
       afterSaveCell: function (rowid, cellname, value, iRow, iCol) {
         // var id = $("#list").getCell(iRow,0);
         // console.log(rowid, cellname, value); // rowid 就是所需的id因为上边 colModel 中的 sid 列设置为key：true
@@ -110,6 +112,19 @@
         postData: { keyword: keyword },
         page: 1
       }).trigger('reloadGrid')
+    })
+
+    $('#delbtn').click(function () {
+      $.ajax({
+        type: 'delete',
+        url: '/student',
+        data: { arr: $('#list').jqGrid('getGridParam', 'selarrrow') },
+        traditional: true,
+        success: function (data) {
+          alert(data.result)
+          location = '/admin/student'
+        }
+      })
     })
   </script>
 </body>

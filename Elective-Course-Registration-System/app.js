@@ -29,6 +29,7 @@ app.get('/admin/course', mainCtrl.showAdminCourse)
 app.get('/admin/report', mainCtrl.showAdminReport)
 app.get('/student', mainCtrl.getAllStudent)
 app.post('/student', mainCtrl.doAddStudent)
+app.delete('/student', mainCtrl.doDeleteStudent)
 app.post('/student/:sid', mainCtrl.updateStudent)
 app.propfind('/student/:sid', mainCtrl.checkSid)
 

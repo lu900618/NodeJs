@@ -178,3 +178,15 @@ exports.checkSid = (req, res) => {
     return res.json({ result: 1 })
   })
 }
+
+exports.doDeleteStudent = (req, res) => {
+  const form = new formidable.IncomingForm()
+  form.parse(req, (err, fields, files) => {
+    if (err) { return res.json({ result: '服务器错误' }) }
+    Student.remove({ sid: fields.arr }, (err, count) => {
+      if (err) { return res.json({ result: '数据库异常' }) }
+      console.log(count)
+      res.json({ result: `删除${count.n}条成功` })
+    })
+  })
+}
