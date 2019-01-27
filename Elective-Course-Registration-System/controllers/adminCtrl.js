@@ -3,6 +3,7 @@ const fs = require('fs')
 const path = require('path')
 const xlsx = require('node-xlsx')
 const url = require('url')
+const dateformat = require('date-format')
 const Student = require('../models/Student')
 
 exports.showAdminDashboard = (req, res) => {
@@ -189,4 +190,34 @@ exports.doDeleteStudent = (req, res) => {
       res.json({ result: `删除${count.n}条成功` })
     })
   })
+}
+
+exports.downloadStudentXlsx = (req, res) => {
+  let xlsxData = []
+  const gradeList = ['初一', '初二', '初三', '高一', '高二', '高三']
+
+  function iterator (i) {
+    if (i === gradeList.length) {
+      console.log(xlsxData)
+      let buffer = xlsx.build(xlsxData)
+      let filename = dateformat('yyyyMMddhhmmssSSS.xlsx')
+      fs.writeFile('./public/xlsx/' + filename, buffer, (err) => {
+        if (err) { return res.json({ result: '生成文件失败' }) }
+        res.redirect('/xlsx/' + filename)
+      })
+      return
+    }
+    let sheet = []
+    sheet.push(['学号', '姓名', '年级', '密码'])
+    Student.find({ grade: gradeList[i] }, (err, results) => {
+      if (err) { return res.json({ result: '服务器错误' }) }
+      results.forEach(item => {
+        sheet.push([item.sid, item.name, item.grade, item.password])
+      })
+      xlsxData.push({ name: gradeList[i], data: sheet })
+      iterator(++i)
+    })
+  }
+
+  iterator(0)
 }
