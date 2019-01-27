@@ -16,3 +16,9 @@
 .searchbox{
 	margin-bottom: 5px;
 }
+
+.myalert{
+	padding: 0 10px;
+	line-height: 30px;
+	margin-top: 8px;
+}

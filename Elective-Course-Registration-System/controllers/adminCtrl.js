@@ -137,3 +137,44 @@ exports.updateStudent = (req, res) => {
     })
   })
 }
+
+exports.showAdminStudentAdd = (req, res) => {
+  res.render('admin/student/add', {
+    page: 'student'
+  })
+}
+
+exports.doAddStudent = (req, res) => {
+  const form = new formidable.IncomingForm()
+  form.parse(req, (err, fields, files) => {
+    if (err) { return res.json({ result: '服务器错误' }) }
+    let stu = new Student()
+    stu = Object.assign(stu, fields)
+    // 验证数据
+    if (!/^\d{9}$/g.test(stu.sid)) {
+      return res.json({ result: '学号必须是9位' })
+    }
+    if (!/^(?:[\u4e00-\u9fa5]+)(?:●[\u4e00-\u9fa5]+)*$|^[a-zA-Z0-9]+\s?[\.·\-()a-zA-Z]*[a-zA-Z]+$/g.test(stu.sid)) {
+      return res.json({ result: '请输出中文名称' })
+    }
+
+    // stu.password = md5(fields.password)
+    Student.find({ sid: stu.sid }, (err, results) => {
+      if (err) { return res.json({ result: '数据库异常' }) }
+      if (results.length > 0) { return res.json({ result: '该学号已存在' }) }
+      stu.save(err => {
+        if (err) { return res.json({ result: '数据库异常' }) }
+        res.json({ result: '新增成功' })
+      })
+    })
+  })
+}
+
+exports.checkSid = (req, res) => {
+  let sid = parseInt(req.params.sid)
+  Student.countDocuments({ sid }, (err, count) => {
+    if (err) { return res.json({ result: '数据库异常' }) }
+    if (count > 0) { return res.json({ result: '学号已存在' }) }
+    return res.json({ result: 1 })
+  })
+}

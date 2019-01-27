@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html class='no-js' lang='en'>
+
+<head>
+  <meta charset='utf-8'>
+  <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+  <title>管理员面板 - 北航附中选修课报名系统</title>
+  <link href="/css/application-a07755f5.css" rel="stylesheet" type="text/css" />
+  <link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+  <link href="/css/iconfont.css" rel="stylesheet" type="text/css">
+</head>
+
+<body class='main page'>
+  <% include ../include/header.ejs %>
+  <div id='wrapper'>
+    <% include ../include/sidebar.ejs %>
+    <section id='tools'>
+      <ul class='breadcrumb' id='breadcrumb'>
+        <li>
+          <a href="/admin/student">学生清单</a>
+        </li>
+        <li>
+          <a href="/admin/student/import">导入学生</a>
+        </li>
+        </li>
+        <li class="active">新增学生</li>
+      </ul>
+    </section>
+    <div id='content'>
+      <div class='panel panel-default'>
+        <div class='panel-heading'>
+          新增学生
+        </div>
+        <div class='panel-body'>
+          <div class="row">
+            <div class="col-lg-5">
+              <p>
+                学号：
+              </p>
+              <p>
+                <input type="text" class="form-control" id="sidTxt" checkvalid>
+              </p>
+              <p>
+                姓名：
+              </p>
+              <p>
+                <input type="text" class="form-control" id="nameTxt" checkvalid>
+              </p>
+              <p>
+                年级：
+              </p>
+              <p>
+                <select class="form-control" id="gradeSelect" checkvalid>
+                  <option value="">请选择</option>
+                  <option value="初一">初一</option>
+                  <option value="初二">初二</option>
+                  <option value="初三">初三</option>
+                  <option value="高一">高一</option>
+                  <option value="高二">高二</option>
+                  <option value="高三">高三</option>
+                </select>
+              </p>
+              <p>
+                初始密码：
+              </p>
+              <p>
+                <input checkvalid type="text" class="form-control" id="passwordTxt">
+              </p>
+              <p>
+                <input type="button" value="提交" id="submitBtn" class="btn btn-success" disabled />
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript" src="/js/jquery.min.js"></script>
+  <script type="text/javascript" src="/js/bootstrap.js"></script>
+
+  <script>
+    var invalid = {
+      sid: true,
+      name: true,
+      grade: true,
+      password: true,
+    }
+
+    $('#sidTxt').blur(function () {
+      var sid = $(this).val()
+      var reg = /^\d{9}$/g
+      var _ths = this
+      if (reg.test(sid)) {
+        $.ajax({
+          type: 'propfind',
+          url: '/student/' + sid,
+          success: function (data) {
+            if (data.result === 1) {
+              invalid.sid = false
+              $(_ths).clearTip()
+            } else {
+              invalid.sid = true
+              $(_ths).waring(data.result)
+            }
+          }
+        })
+      } else {
+        invalid.sid = true
+        $(this).waring('学号必须是9位')
+      }
+
+    })
+    $('#nameTxt').blur(function () {
+      var name = $(this).val()
+      var reg = /^(?:[\u4e00-\u9fa5]+)(?:●[\u4e00-\u9fa5]+)*$|^[a-zA-Z0-9]+\s?[\.·\-()a-zA-Z]*[a-zA-Z]+$/g
+      if (reg.test(name)) {
+        invalid.name = false
+        $(this).clearTip()
+      } else {
+        invalid.name = true
+        $(this).waring('请输入中文名称')
+      }
+    })
+    $('#gradeSelect').change(function () {
+      var grade = $(this).val()
+      if (grade) {
+        invalid.grade = false
+        $(this).clearTip()
+      } else {
+        invalid.grade = true
+        $(this).waring('请选择')
+      }
+    })
+    $('#passwordTxt').blur(function () {
+      var password = $(this).val()
+      if (password) {
+        invalid.password = false
+        $(this).clearTip()
+      } else {
+        invalid.password = true
+        $(this).waring('请输入密码')
+      }
+    })
+    $('[checkvalid]').focus(function () {
+      $(this).clearTip()
+    })
+    $('[checkvalid]').blur(function () {
+      var allValid = true
+      for (var k in invalid) {
+        if (invalid.hasOwnProperty(k)) {
+          if (invalid[k]) {
+            allValid = false
+            $('#submitBtn').attr('disabled', 'disabled')
+            break
+          }
+        }
+      }
+      if (allValid) {
+        $('#submitBtn').removeAttr('disabled')
+      }
+      console.log(invalid)
+    })
+
+    $('#submitBtn').click(function () {
+      $.post('/student' + '', {
+        sid: $('#sidTxt').val(),
+        name: $('#nameTxt').val(),
+        grade: $('#gradeSelect').val(),
+        password: $('#passwordTxt').val(),
+      }, function (data) {
+        alert(data.result)
+      })
+    })
+
+    $.fn.extend({
+      waring: function (msg) {
+        this.after(`<div class="alert myalert alert-danger" role="alert">${msg}</div>`)
+      },
+      clearTip: function () {
+        this.nextAll('.myalert').remove()
+      }
+    })
+
+
+  </script>
+</body>
+
+</html>

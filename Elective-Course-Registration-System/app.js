@@ -24,10 +24,13 @@ app.get('/admin/student', mainCtrl.showAdminStudent)
 app.get('/admin/student/import', mainCtrl.showAdminStudentImport)
 app.post('/admin/student/import', mainCtrl.doAdminStudentImport)
 app.get('/admin/student/export', mainCtrl.showAdminStudentExport)
+app.get('/admin/student/add', mainCtrl.showAdminStudentAdd)
 app.get('/admin/course', mainCtrl.showAdminCourse)
 app.get('/admin/report', mainCtrl.showAdminReport)
 app.get('/student', mainCtrl.getAllStudent)
+app.post('/student', mainCtrl.doAddStudent)
 app.post('/student/:sid', mainCtrl.updateStudent)
+app.propfind('/student/:sid', mainCtrl.checkSid)
 
 // 静态资源文件
 app.use(express.static('public'))
