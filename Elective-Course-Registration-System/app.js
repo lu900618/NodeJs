@@ -3,6 +3,7 @@ const express = require('express')
 const session = require('express-session')
 const mongoose = require('mongoose')
 const mainCtrl = require('./controllers/adminCtrl')
+const studentCtrl = require('./controllers/adminStudentCtrl')
 
 // 连接数据库
 mongoose.connect('mongodb://localhost/ElectiveCourseRegistrationSystem', { useNewUrlParser: true })
@@ -20,20 +21,21 @@ app.set('view engine', 'ejs')
 
 // 中间件
 app.get('/admin', mainCtrl.showAdminDashboard)
-app.get('/admin/student', mainCtrl.showAdminStudent)
-app.get('/admin/student/import', mainCtrl.showAdminStudentImport)
-app.post('/admin/student/import', mainCtrl.doAdminStudentImport)
-app.get('/admin/student/export', mainCtrl.showAdminStudentExport)
-app.get('/admin/student/add', mainCtrl.showAdminStudentAdd)
-app.get('/admin/student/download', mainCtrl.downloadStudentXlsx)
+
+app.get('/admin/student', studentCtrl.showAdminStudent)
+app.get('/admin/student/import', studentCtrl.showAdminStudentImport)
+app.post('/admin/student/import', studentCtrl.doAdminStudentImport)
+app.get('/admin/student/export', studentCtrl.showAdminStudentExport)
+app.get('/admin/student/add', studentCtrl.showAdminStudentAdd)
+app.get('/admin/student/download', studentCtrl.downloadStudentXlsx)
+app.get('/student', studentCtrl.getAllStudent)
+app.post('/student', studentCtrl.doAddStudent)
+app.delete('/student', studentCtrl.doDeleteStudent)
+app.post('/student/:sid', studentCtrl.updateStudent)
+app.propfind('/student/:sid', studentCtrl.checkSid)
+
 app.get('/admin/course', mainCtrl.showAdminCourse)
 app.get('/admin/report', mainCtrl.showAdminReport)
-app.get('/student', mainCtrl.getAllStudent)
-app.post('/student', mainCtrl.doAddStudent)
-app.delete('/student', mainCtrl.doDeleteStudent)
-app.post('/student/:sid', mainCtrl.updateStudent)
-app.propfind('/student/:sid', mainCtrl.checkSid)
-
 // 静态资源文件
 app.use(express.static('public'))
 
