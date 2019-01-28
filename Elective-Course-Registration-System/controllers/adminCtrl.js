@@ -4,11 +4,7 @@ exports.showAdminDashboard = (req, res) => {
   })
 }
 
-exports.showAdminCourse = (req, res) => {
-  res.render('admin/course', {
-    page: 'course'
-  })
-}
+
 
 exports.showAdminReport = (req, res) => {
   res.render('admin/report', {

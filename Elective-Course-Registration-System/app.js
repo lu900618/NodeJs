@@ -2,6 +2,7 @@
 const express = require('express')
 const session = require('express-session')
 const mongoose = require('mongoose')
+const courseCtrl = require('./controllers/adminCourseCtrl')
 const mainCtrl = require('./controllers/adminCtrl')
 const studentCtrl = require('./controllers/adminStudentCtrl')
 
@@ -34,7 +35,11 @@ app.delete('/student', studentCtrl.doDeleteStudent)
 app.post('/student/:sid', studentCtrl.updateStudent)
 app.propfind('/student/:sid', studentCtrl.checkSid)
 
-app.get('/admin/course', mainCtrl.showAdminCourse)
+app.get('/admin/course', courseCtrl.showAdminCourse)
+app.get('/admin/course/import', courseCtrl.showAdminCourseImport)
+app.post('/admin/course/import', courseCtrl.doAdminCourseImport)
+app.get('/admin/course/add', courseCtrl.showAdminCourseAdd)
+
 app.get('/admin/report', mainCtrl.showAdminReport)
 // 静态资源文件
 app.use(express.static('public'))
