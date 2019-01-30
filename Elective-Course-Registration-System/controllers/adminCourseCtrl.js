@@ -82,7 +82,6 @@ exports.getAllCourse = (req, res) => {
 }
 
 exports.updateCourse = (req, res) => {
-  console.log(1)
   const form = new formidable.IncomingForm()
   form.parse(req, (err, fields, files) => {
     if (err) { return res.json({ result: '服务器错误' }) }
@@ -101,6 +100,18 @@ exports.updateCourse = (req, res) => {
       if (err) { return res.json({ result: '数据库异常' }) }
       if (results.length === 0) { return res.json({ result: '未查到该学生信息' }) }
       res.json({ result: '更新成功' })
+    })
+  })
+}
+
+exports.doDeleteCourse = (req, res) => {
+  const form = new formidable.IncomingForm()
+  form.parse(req, (err, fields, files) => {
+    console.log(fields.arr)
+    if (err) { return res.json({ result: '服务器错误' }) }
+    Course.deleteMany({ cid: fields.arr }, (err, count) => {
+      if (err) { return res.json({ result: '数据库异常' }) }
+      res.json({ result: `删除${count.n}条成功` })
     })
   })
 }
