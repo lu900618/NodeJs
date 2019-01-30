@@ -2,6 +2,7 @@ const formidable = require('formidable')
 const fs = require('fs')
 const Course = require('../models/Course')
 const mongoose = require('mongoose')
+const url = require('url')
 
 exports.showAdminCourse = (req, res) => {
   res.render('admin/course', {
@@ -41,6 +42,65 @@ exports.doAdminCourseImport = (req, res) => {
           res.json({ result: r.length })
         })
       })
+    })
+  })
+}
+
+exports.getAllCourse = (req, res) => {
+  let rows = parseInt(url.parse(req.url, true).query.rows) || 5
+  let page = parseInt(url.parse(req.url, true).query.page) || 1
+  let sord = url.parse(req.url, true).query.sord === 'asc' ? 1 : -1
+  let sidx = url.parse(req.url, true).query.sidx
+  let keyword = url.parse(req.url, true).query.keyword
+
+  let obj = {}
+  obj[sidx] = sord // 不拼装对象 sort({sidx:sord})会识别成sort({sidx:1})
+
+  let filter = {}
+  if (keyword !== undefined || keyword !== '') {
+    let reg = new RegExp(keyword, 'g')
+    filter = {
+      // 模糊查询（全字段查询）
+      $or: [
+        { name: reg },
+        { cid: reg },
+        { teacher: reg },
+        { briefintro: reg }
+      ]
+    }
+  }
+
+  Course.countDocuments(filter, (err, count) => {
+    if (err) return res.json({ result: '服务器错误' })
+
+    // 注意sort先后对结果的影像
+    Course.find(filter).sort(obj).skip(rows * (page - 1)).limit(rows).sort(obj).exec((err, results) => {
+      if (err) return res.json({ result: '服务器错误' })
+      res.json({ rows: results, total: Math.ceil(count / rows), records: count })
+    })
+  })
+}
+
+exports.updateCourse = (req, res) => {
+  console.log(1)
+  const form = new formidable.IncomingForm()
+  form.parse(req, (err, fields, files) => {
+    if (err) { return res.json({ result: '服务器错误' }) }
+    let cid = fields.cid
+    let obj = {}
+    obj.cid = fields.cid
+    obj.name = fields.name
+    obj.dayofweek = fields.dayofweek
+    obj.allow = fields.allow.split(',')
+    obj.number = fields.number
+    obj.teacher = fields.teacher
+    obj.briefintro = fields.briefintro
+    // obj.oper = fields.oper
+
+    Course.findOneAndUpdate({ cid }, obj, (err, results) => {
+      if (err) { return res.json({ result: '数据库异常' }) }
+      if (results.length === 0) { return res.json({ result: '未查到该学生信息' }) }
+      res.json({ result: '更新成功' })
     })
   })
 }

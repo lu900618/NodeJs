@@ -39,6 +39,8 @@ app.get('/admin/course', courseCtrl.showAdminCourse)
 app.get('/admin/course/import', courseCtrl.showAdminCourseImport)
 app.post('/admin/course/import', courseCtrl.doAdminCourseImport)
 app.get('/admin/course/add', courseCtrl.showAdminCourseAdd)
+app.get('/course', courseCtrl.getAllCourse)
+app.post('/admin/course/', courseCtrl.updateCourse)
 
 app.get('/admin/report', mainCtrl.showAdminReport)
 // 静态资源文件
