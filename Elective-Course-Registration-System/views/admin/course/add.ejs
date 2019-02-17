@@ -32,7 +32,66 @@
           新增课程
         </div>
         <div class='panel-body'>
-          
+          <div class="row">
+            <div class="col-lg-5">
+              <p>
+                编号：
+              </p>
+              <p>
+                <input type="text" class="form-control" id="cidTxt">
+              </p>
+              <p>
+                名称：
+              </p>
+              <p>
+                <input type="text" class="form-control" id="nameTxt">
+              </p>
+              <p>
+                星期几：
+              </p>
+              <p>
+                <select class="form-control" id="dayofweekSelect">
+                  <option value="">请选择</option>
+                  <option value="周二">周二</option>
+                  <option value="周三">周三</option>
+                  <option value="周五">周五</option>
+                </select>
+              </p>
+              <p>
+                允许年级：
+              </p>
+              <label>
+                <label><input type="checkbox" name="allowcheck" value="初一">初一</label>
+                <label><input type="checkbox" name="allowcheck" value="初二">初二</label>
+                <label><input type="checkbox" name="allowcheck" value="初三">初三</label>
+                <label><input type="checkbox" name="allowcheck" value="高一">高一</label>
+                <label><input type="checkbox" name="allowcheck" value="高二">高二</label>
+                <label><input type="checkbox" name="allowcheck" value="高三">高三</label>
+                </p>
+                <p>
+                  剩余人数：
+                </p>
+                <p>
+                  <input type="text" class="form-control" id="numberTxt">
+                </p>
+                <p>
+                  老师：
+                </p>
+                <p>
+                  <input type="text" class="form-control" id="teacherTxt">
+                </p>
+                <p>
+                  简介：
+                </p>
+                <p>
+                  <textarea class="form-control" id="briefintroTxt" rows="8" cols="70">
+                </textarea>
+                </p>
+                <p>
+                  <input type="button" value="提交" id="submitBtn" class="btn btn-success" />
+                </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -42,6 +101,40 @@
   <script type="text/javascript" src="/js/bootstrap.js"></script>
 
   <script>
+    $('#submitBtn').click(function () {
+      $.ajax({
+        url: '/course',
+        method: 'post',
+        traditional: true,
+        data: {
+          cid: $('#cidTxt').val(),
+          name: $('#nameTxt').val(),
+          dayofweek: $('#dayofweekSelect').val(),
+          number: $('#numberTxt').val(),
+          teacher: $('#teacherTxt').val(),
+          allow: (function () {
+            var arr = []
+            $('input[name=allowcheck]:checked').each(function (i, item) {
+              arr.push($(this).val())
+            })
+            return arr
+          })(),
+          briefintro: $('#briefintroTxt').val(),
+        },
+        success: function (data) {
+          alert(data.result)
+        }
+      })
+    })
+
+    $.fn.extend({
+      waring: function (msg) {
+        this.after(`<div class="alert myalert alert-danger" role="alert">${msg}</div>`)
+      },
+      clearTip: function () {
+        this.nextAll('.myalert').remove()
+      }
+    })
 
 
   </script>
