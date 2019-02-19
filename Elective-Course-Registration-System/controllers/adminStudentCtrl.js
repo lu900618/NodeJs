@@ -67,6 +67,9 @@ exports.showAdminStudentExport = (req, res) => {
 }
 
 exports.getAllStudent = (req, res) => {
+  // if (req.session.login != true) {
+  //   return res.redirect('/login')
+  // }
   let rows = parseInt(url.parse(req.url, true).query.rows) || 5
   let page = parseInt(url.parse(req.url, true).query.page) || 1
   let sord = url.parse(req.url, true).query.sord === 'asc' ? 1 : -1

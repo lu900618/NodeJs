@@ -77,7 +77,7 @@
       $(this).next('span.alert').hide()
     })
 
-    $('#loginBtn').blur(function () {
+    $('#loginBtn').click(function () {
       var sid = $('#sidTxt').val()
       var password = $('#password').val()
       if (!/^[\d]{9}$/.test(sid)) {

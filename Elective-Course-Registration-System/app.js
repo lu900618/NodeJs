@@ -49,6 +49,9 @@ app.get('/admin/report', adminCtrl.showAdminReport)
 
 app.get('/login', mainCtrl.showLogin)
 app.post('/login', mainCtrl.doLogin)
+app.get('/logout', mainCtrl.doLogout)
+app.get('/changepw', mainCtrl.showChangepw)
+app.post('/changepw', mainCtrl.doChangepw)
 app.get('/', mainCtrl.showTable)
 // 静态资源文件
 app.use(express.static('public'))
