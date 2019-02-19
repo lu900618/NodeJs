@@ -3,7 +3,8 @@ const express = require('express')
 const session = require('express-session')
 const mongoose = require('mongoose')
 const courseCtrl = require('./controllers/adminCourseCtrl')
-const mainCtrl = require('./controllers/adminCtrl')
+const adminCtrl = require('./controllers/adminCtrl')
+const mainCtrl = require('./controllers/mainCtrl')
 const studentCtrl = require('./controllers/adminStudentCtrl')
 
 // 连接数据库
@@ -21,7 +22,7 @@ app.use(session({
 app.set('view engine', 'ejs')
 
 // 中间件
-app.get('/admin', mainCtrl.showAdminDashboard)
+app.get('/admin', adminCtrl.showAdminDashboard)
 
 app.get('/admin/student', studentCtrl.showAdminStudent)
 app.get('/admin/student/import', studentCtrl.showAdminStudentImport)
@@ -44,7 +45,11 @@ app.post('/course', courseCtrl.doAddCourse)
 app.delete('/course', courseCtrl.doDeleteCourse)
 app.post('/admin/course/', courseCtrl.updateCourse)
 
-app.get('/admin/report', mainCtrl.showAdminReport)
+app.get('/admin/report', adminCtrl.showAdminReport)
+
+app.get('/login', mainCtrl.showLogin)
+app.post('/login', mainCtrl.doLogin)
+app.get('/', mainCtrl.showTable)
 // 静态资源文件
 app.use(express.static('public'))
 

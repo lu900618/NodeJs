@@ -4,8 +4,6 @@ exports.showAdminDashboard = (req, res) => {
   })
 }
 
-
-
 exports.showAdminReport = (req, res) => {
   res.render('admin/report', {
     page: 'report'
