@@ -13,7 +13,7 @@ mongoose.connect('mongodb://localhost/ElectiveCourseRegistrationSystem', { useNe
 const app = express()
 app.use(session({
   secret: 'ElectiveCourseRegistrationSystem',
-  cookie: { maxAge: 9000 },
+  cookie: { maxAge: 1000 * 60 * 10 },
   resave: false,
   saveUninitialized: true
 }))
@@ -52,6 +52,7 @@ app.post('/login', mainCtrl.doLogin)
 app.get('/logout', mainCtrl.doLogout)
 app.get('/changepw', mainCtrl.showChangepw)
 app.post('/changepw', mainCtrl.doChangepw)
+app.get('/check', mainCtrl.check)
 app.get('/', mainCtrl.showTable)
 // 静态资源文件
 app.use(express.static('public'))

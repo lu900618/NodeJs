@@ -1,6 +1,7 @@
 const crypto = require('crypto')
 const formidable = require('formidable')
 const Student = require('../models/Student')
+const Course = require('../models/Course')
 
 exports.showLogin = (req, res) => {
   res.render('login', {})
@@ -83,5 +84,44 @@ exports.doChangepw = (req, res) => {
       res.json({ result: '密码修改成功', code: 0000 })
     })
   })
+}
+
+exports.check = (req, res) => {
+  let results = {}
+  Student.find({ sid: req.session.sid }, (err, students) => {
+    if (err) { return res.json({ result: '服务器错误' }) }
+    // 已经报名的课程序号
+    let myCourses = students[0].myCourses
+    let grade = students[0].grade
+    // 映射对象：存的是已报名课程和星期的对应关系
+    let occupyWeek = [] // 已经占用的星期
+
+    Course.find({}, (err, courses) => {
+      if (err) { return res.json({ result: '服务器错误' }) }
+      courses.forEach(c => {
+        if (myCourses.indexOf(c.cid) !== -1) {
+          occupyWeek.push(c.dayofweek)
+        }
+      })
+      courses.forEach(c => {
+        if (c.number <= 0) {
+          results[c.cid] = '没有剩余名额了'
+        } else if (myCourses.indexOf(c.cid) !== -1) {
+          results[c.cid] = '已经包名此课程'
+        } else if (occupyWeek.indexOf(c.dayofweek) !== -1) {
+          results[c.cid] = '当天已经报名其他课程'
+        } else if (c.allow.indexOf(grade) == -1) {
+          results[c.cid] = '不允许该年级学生报名本课程'
+        } else if (occupyWeek.length == 2) {
+          results[c.cid] = '已达报名课程数量上限'
+        } else {
+          results[c.cid] = '可以报名'
+        }
+      })
+      res.json(results)
+    })
+  })
+
+
 
 }

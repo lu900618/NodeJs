@@ -5,7 +5,8 @@ const studentSchema = new mongoose.Schema({
   'name': String,
   'grade': String,
   'password': String,
-  'isChangedPwd': {type: Boolean, default: false}
+  'isChangedPwd': { type: Boolean, default: false },
+  'myCourses': [String]
 })
 
 studentSchema.statics.importStudents = list => {
