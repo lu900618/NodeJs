@@ -83,7 +83,7 @@
               $("#bmbtn" + item.cid).val(results[item.cid]);
               if(results[item.cid] == "可以报名"){
                 $("#bmbtn" + item.cid).addClass("btn-success");
-              }else if(results[item.cid] == "已经报名此课"){
+              }else if(results[item.cid] == "已经报名此课程"){
                 $("#bmbtn" + item.cid).attr("disabled",true).after("<p><a href='javascript:void(0);' class='tbbtn' data-role='tuibao' data-cid=" + item.cid + ">已经报名，点击退报</a></p>")
               }else{
                 $("#bmbtn" + item.cid).attr("disabled",true);
@@ -98,7 +98,7 @@
           $.post("/baoming",{
             "cid" : $(this).attr("data-cid")
           },function(data){
-            if(data.result == 1){
+            if(data.result == '报名成功'){
               alert("报名成功！");
               //刷新本页
               window.location.reload();
@@ -111,7 +111,7 @@
           $.post("/tuibao",{
             "cid" : $(this).attr("data-cid")
           },function(data){
-             if(data.result == 1){
+             if(data.result == '退报成功'){
               alert("退报成功！");
               //刷新本页
               window.location.reload();

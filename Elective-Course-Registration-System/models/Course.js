@@ -7,7 +7,8 @@ const courseSchema = new mongoose.Schema({
   number: Number,
   allow: [String],
   teacher: String,
-  briefintro: String
+  briefintro: String,
+  'myCourses': [String]
 })
 
 const Course = mongoose.model('Course', courseSchema)

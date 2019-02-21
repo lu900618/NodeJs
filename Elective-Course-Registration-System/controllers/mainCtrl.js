@@ -2,6 +2,7 @@ const crypto = require('crypto')
 const formidable = require('formidable')
 const Student = require('../models/Student')
 const Course = require('../models/Course')
+const _ = require('underscore')
 
 exports.showLogin = (req, res) => {
   res.render('login', {})
@@ -107,7 +108,7 @@ exports.check = (req, res) => {
         if (c.number <= 0) {
           results[c.cid] = '没有剩余名额了'
         } else if (myCourses.indexOf(c.cid) !== -1) {
-          results[c.cid] = '已经包名此课程'
+          results[c.cid] = '已经报名此课程'
         } else if (occupyWeek.indexOf(c.dayofweek) !== -1) {
           results[c.cid] = '当天已经报名其他课程'
         } else if (c.allow.indexOf(grade) == -1) {
@@ -121,7 +122,50 @@ exports.check = (req, res) => {
       res.json(results)
     })
   })
+}
 
+exports.baoming = (req, res) => {
+  let sid = req.session.sid
+  const form = new formidable.IncomingForm()
+  form.parse(req, (err, fields, files) => {
+    let cid = fields.cid
+    Student.find({ sid }, (err, students) => {
+      if (err) { return res.json({ result: '服务器错误' }) }
+      students[0].myCourses.push(cid)
+      students[0].save(err => {
+        if (err) { return res.json({ result: '服务器错误' }) }
+        Course.find({ cid }, (err, courses) => {
+          if (err) { return res.json({ result: '服务器错误' }) }
+          courses[0].myCourses.push(cid)
+          courses[0].save(err => {
+            if (err) { return res.json({ result: '服务器错误' }) }
+            res.json({ result: '报名成功' })
+          })
+        })
+      })
+    })
+  })
+}
 
-
+exports.tuibao = (req, res) => {
+  let sid = req.session.sid
+  const form = new formidable.IncomingForm()
+  form.parse(req, (err, fields, files) => {
+    let cid = fields.cid
+    Student.find({ sid }, (err, students) => {
+      if (err) { return res.json({ result: '服务器错误' }) }
+      students[0].myCourses = _.without(students[0].myCourses, cid)
+      students[0].save(err => {
+        if (err) { return res.json({ result: '服务器错误' }) }
+        Course.find({ cid }, (err, courses) => {
+          if (err) { return res.json({ result: '服务器错误' }) }
+          courses[0].myCourses = _.without(courses[0].myCourses, cid)
+          courses[0].save(err => {
+            if (err) { return res.json({ result: '服务器错误' }) }
+            res.json({ result: '退报成功' })
+          })
+        })
+      })
+    })
+  })
 }

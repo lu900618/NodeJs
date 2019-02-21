@@ -54,6 +54,8 @@ app.get('/changepw', mainCtrl.showChangepw)
 app.post('/changepw', mainCtrl.doChangepw)
 app.get('/check', mainCtrl.check)
 app.get('/', mainCtrl.showTable)
+app.post('/baoming', mainCtrl.baoming)
+app.post('/tuibao', mainCtrl.tuibao)
 // 静态资源文件
 app.use(express.static('public'))
 
