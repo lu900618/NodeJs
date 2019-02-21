@@ -137,6 +137,7 @@ exports.baoming = (req, res) => {
         Course.find({ cid }, (err, courses) => {
           if (err) { return res.json({ result: '服务器错误' }) }
           courses[0].myCourses.push(cid)
+          courses[0].number--
           courses[0].save(err => {
             if (err) { return res.json({ result: '服务器错误' }) }
             res.json({ result: '报名成功' })
@@ -160,6 +161,7 @@ exports.tuibao = (req, res) => {
         Course.find({ cid }, (err, courses) => {
           if (err) { return res.json({ result: '服务器错误' }) }
           courses[0].myCourses = _.without(courses[0].myCourses, cid)
+          courses[0].number++
           courses[0].save(err => {
             if (err) { return res.json({ result: '服务器错误' }) }
             res.json({ result: '退报成功' })
