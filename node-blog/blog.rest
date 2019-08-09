@@ -1,0 +1,38 @@
+###
+GET http://localhost:8000/api/blog/list HTTP/1.1
+
+###
+GET http://localhost:8000/api/blog/detail HTTP/1.1
+
+###
+POST http://localhost:8000/api/blog/new HTTP/1.1
+content-type: application/json
+
+{
+
+}
+
+###
+POST http://localhost:8000/api/blog/update HTTP/1.1
+content-type: application/json
+
+{
+
+}
+
+###
+POST http://localhost:8000/api/blog/delete HTTP/1.1
+content-type: application/json
+
+{
+
+}
+
+###
+POST http://localhost:8000/api/user/login HTTP/1.1
+content-type: application/json
+
+{
+    "username": "zhangsan",
+    "password": "123456"
+}

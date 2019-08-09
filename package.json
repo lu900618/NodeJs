@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lu900618/NodeJs.git"
+    "url": "git@github.com:lu900618/NodeJs.git"
   },
   "license": "MIT",
   "bugs": {
@@ -27,5 +27,7 @@
     "mongoose": "^5.4.4",
     "progress": "^2.0.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "cross-env": "^5.2.0"
+  }
 }

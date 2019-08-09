@@ -1,0 +1,25 @@
+GET http://localhost:9999/user/a?name=zs&age=25 HTTP/1.1
+
+###
+
+POST http://localhost:9999 HTTP/1.1
+content-type: application/json
+
+{
+    "name": "zs",
+    "age": 25
+}
+
+###
+
+GET http://www.baidu.com HTTP/1.1
+
+###
+
+POST http://localhost:9999/blog/update?id=1001&edit=true HTTP/1.1
+content-type: application/json
+
+{
+    "title": "zs",
+    "content": 25
+}
