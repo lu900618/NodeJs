@@ -1,12 +1,24 @@
 const {getList, getDetail, newBlog, updateBlog, deleteBlog} = require('../controller/blog')
 const {SuccessModel, ErrorModel} = require('../model/BaseModel')
 
+// 登录验证函数
+const loginCheck = req => {
+  if (!req.session.username) {
+    return Promise.resolve(new ErrorModel('尚未登录'))
+  }
+}
+
 const handleBlogRouter = (req, res) => {
   const method = req.method
   const path = req.path
   let id = req.query.id
 
   if (method === 'GET' && path === '/api/blog/list') {
+    // 如果 loginCheck 有返回，说明为登录
+    let loginCheckResult = loginCheck(req)
+    if (loginCheckResult) {
+      return loginCheckResult
+    }
     const {author = '', keyword = ''} = req.query
     // let listData = getList(author, keyword)
     // return new SuccessModel(listData)
@@ -17,6 +29,11 @@ const handleBlogRouter = (req, res) => {
   }
 
   if (method === 'GET' && path === '/api/blog/detail') {
+    // 如果 loginCheck 有返回，说明为登录
+    let loginCheckResult = loginCheck(req)
+    if (loginCheckResult) {
+      return loginCheckResult
+    }
     const result = getDetail(id)
     return result.then(detailData => {
       return new SuccessModel(detailData)
@@ -24,7 +41,12 @@ const handleBlogRouter = (req, res) => {
   }
 
   if (method === 'POST' && path === '/api/blog/new') {
-    req.body.author = 'zhangsan'
+    // 如果 loginCheck 有返回，说明为登录
+    let loginCheckResult = loginCheck(req)
+    if (loginCheckResult) {
+      return loginCheckResult
+    }
+    req.body.author = req.session.username
     const result = newBlog(req.body)
     return result.then(data => {
       return new SuccessModel(data)
@@ -32,6 +54,11 @@ const handleBlogRouter = (req, res) => {
   }
 
   if (method === 'POST' && path === '/api/blog/update') {
+    // 如果 loginCheck 有返回，说明为登录
+    let loginCheckResult = loginCheck(req)
+    if (loginCheckResult) {
+      return loginCheckResult
+    }
     const result = updateBlog(id, req.body)
     return result.then(rs => {
       if (rs) {
@@ -43,7 +70,12 @@ const handleBlogRouter = (req, res) => {
   }
 
   if (method === 'POST' && path === '/api/blog/delete') {
-    let author = 'zhangsan'
+    // 如果 loginCheck 有返回，说明为登录
+    let loginCheckResult = loginCheck(req)
+    if (loginCheckResult) {
+      return loginCheckResult
+    }
+    let author = req.session.username
     const result = deleteBlog(id, author)
     return result.then(rs => {
       if (rs) {

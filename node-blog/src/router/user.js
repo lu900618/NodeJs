@@ -6,8 +6,8 @@ const handleUserRouter = (req, res) => {
   const method = req.method
   const path = req.path
 
-  if (method === 'GET' && path === '/api/user/login') {
-    const {username, password} = req.query
+  if (method === 'POST' && path === '/api/user/login') {
+    const {username, password} = req.body
     const result = login(username, password)
     return result.then(data => {
       if (data.username) {
@@ -23,13 +23,13 @@ const handleUserRouter = (req, res) => {
     })
   }
 
-  // 登录验证的测试
-  if (method === 'GET' && path === '/api/user/login-test') {
-    if (req.session.username) {
-      return Promise.resolve(new SuccessModel({session: req.session}))
-    }
-    return Promise.resolve(new ErrorModel())
-  }
+  // // 登录验证的测试
+  // if (method === 'GET' && path === '/api/user/login-test') {
+  //   if (req.session.username) {
+  //     return Promise.resolve(new SuccessModel({session: req.session}))
+  //   }
+  //   return Promise.resolve(new ErrorModel())
+  // }
 }
 
 module.exports = handleUserRouter
