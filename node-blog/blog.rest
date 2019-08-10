@@ -1,42 +1,42 @@
-###
+### 查询博客列表
 GET http://localhost:8000/api/blog/list HTTP/1.1
-
 ###
-GET http://localhost:8000/api/blog/detail?id=1001 HTTP/1.1
-
+GET http://localhost:8000/api/blog/list?author=zhangsan HTTP/1.1
 ###
+GET http://localhost:8000/api/blog/list?author=zhangsan&&keyword=1 HTTP/1.1
+
+### 查询博客详情
+GET http://localhost:8000/api/blog/detail?id=1 HTTP/1.1
+
+### 新增博客
 POST http://localhost:8000/api/blog/new HTTP/1.1
 content-type: application/json
 
 {
     "title": "title5",
-    "content": "lorem6",
-    "createTime": "",
-    "author": "zhangsan"
+    "content": "lorem6"
 }
 
-###
+### 更新博客
 POST http://localhost:8000/api/blog/update?id=5 HTTP/1.1
 content-type: application/json
 
 {
     "title": "title5",
-    "content": "lorem6",
-    "createTime": "",
-    "author": "zhangsan"
+    "content": "lorem6"
 }
 
-###
-POST http://localhost:8000/api/blog/delete?id=4 HTTP/1.1
+### 删除博客
+POST http://localhost:8000/api/blog/delete?id=5 HTTP/1.1
 content-type: application/json
 
 {}
 
-###
+### 用户登录
 POST http://localhost:8000/api/user/login HTTP/1.1
 content-type: application/json
 
 {
-    "username": "zhangsan",
-    "password": "123456"
+    "username": "lisi",
+    "password": "123"
 }
