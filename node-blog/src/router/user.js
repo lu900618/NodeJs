@@ -1,5 +1,6 @@
 const {login} = require('../controller/user')
 const {SuccessModel, ErrorModel} = require('../model/BaseModel')
+const {set} = require('../db/redis')
 
 const handleUserRouter = (req, res) => {
   const method = req.method
@@ -13,6 +14,8 @@ const handleUserRouter = (req, res) => {
         // 设置session
         req.session.username = data.username
         req.session.realname = data.realname
+        // 同步到Redis中
+        set(req.sessionId, req.session)
 
         return new SuccessModel({session: req.session})
       }

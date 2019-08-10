@@ -10,6 +10,7 @@ function exec(sql){
     con.query(sql, (err, rs) => {
       if (err) {
         reject(err)
+        return
       }
       resolve(rs)
     })
