@@ -1,5 +1,6 @@
 const querystring = require('querystring')
 const {get, set} = require('./src/db/redis')
+const {access} = require('./src/utils/log')
 const handleUserRouter = require('./src/router/user')
 const handleBlogRouter = require('./src/router/blog')
 
@@ -45,6 +46,9 @@ const getCookieExoires = () => {
 }
 
 const serverHandle = (req, res) => {
+
+  access(`${new Date().toISOString()}--${req.method}--${req.url}--${req.headers['user-agent']}`)
+
   res.setHeader('Content-Type', 'application/json')
 
   // const resData = {
