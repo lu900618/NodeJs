@@ -37,7 +37,7 @@ DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(20) NOT NULL,
-  `password` varchar(20) NOT NULL,
+  `password` varchar(32) NOT NULL,
   `realname` varchar(10) NOT NULL,
   `state` int(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
