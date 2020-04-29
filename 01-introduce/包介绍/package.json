@@ -20,9 +20,9 @@
   },
   "homepage": "https://github.com/lu900618/NodeJs#readme",
   "dependencies": {
-    "jquery": "1.*"
+    "jquery": "3.*"
   },
   "devDependencies": {
-    "jquery": "1.*"
+    "jquery": "3.*"
   }
 }
