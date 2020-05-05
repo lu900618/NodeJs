@@ -47,4 +47,4 @@ path.relative(from, to);
 path.resolve()
 
 // 分隔符
-path.sep()
+console.log(path.sep)
