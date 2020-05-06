@@ -22,6 +22,7 @@
     "browser-sync": "^2.18.12",
     "download-git-repo": "^3.0.2",
     "iconv-lite": "^0.4.18",
+    "koa": "^2.11.0",
     "marked": "^0.3.6",
     "mime": "^1.3.6",
     "moment": "^2.18.1",
